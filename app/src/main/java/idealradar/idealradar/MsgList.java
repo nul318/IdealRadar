@@ -31,11 +31,14 @@ public class MsgList extends AppCompatActivity {
     ListView listView;
     MsgListAdapter mAdapter;
     String TAG = "MsgList";
+    String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_msg_list);
+
+        user_id = getIntent().getStringExtra("user_id");
 
         String url = "http://hanea8199.vps.phps.kr/IdealRadar/GetMsgList.php";
         new mAsyncTask().execute(url);
@@ -115,7 +118,7 @@ public class MsgList extends AppCompatActivity {
                 // add post parameters
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write("user_id=8637959_naver"); // TODO: 2016. 11. 13.
+                writer.write("user_id="+user_id); // TODO: 2016. 11. 13.
                 writer.flush();
                 writer.close();
                 os.close();
