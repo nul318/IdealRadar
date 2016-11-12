@@ -10,6 +10,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,31 +37,11 @@ public class MsgList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_msg_list);
 
-        String url = "http://hanea8199.vps.phps.kr/IdealRadarMsgList.php";
+        String url = "http://hanea8199.vps.phps.kr/IdealRadar/GetMsgList.php";
         new mAsyncTask().execute(url);
 
-        final ArrayList<String> textArray = new ArrayList<>();
-        textArray.add("text 1 ");
-        textArray.add("text 2 ");
-        final ArrayList<String> senderArray = new ArrayList<>();
-        senderArray.add("sender 1");
-        senderArray.add("sender 2");
-        final ArrayList<Boolean> isSentArray = new ArrayList<>();
-        isSentArray.add(true);
-        isSentArray.add(false);
-
         listView = (ListView) findViewById(R.id.mListView);
-        mAdapter = new MsgListAdapter(MsgList.this,textArray,senderArray,isSentArray);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(MsgList.this,ReadMsg.class);
-                i.putExtra("text",textArray.get(position));
-                i.putExtra("sender",senderArray.get(position));
-                startActivity(i);
-            }
-        });
+
     }
 
     private class mAsyncTask extends AsyncTask<String, Void, String> {
@@ -65,6 +49,44 @@ public class MsgList extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             // TODO: 2016. 11. 13.  json 으로 메세지 리스트 받아서 리스트뷰로 출력
+            Log.d(TAG, "onPostExecute: "+s);
+
+            final ArrayList<String> textArray = new ArrayList<>();
+            final ArrayList<String> senderArray = new ArrayList<>();
+            final ArrayList<Boolean> isSentArray = new ArrayList<>();
+
+            try {
+
+                JSONObject object = new JSONObject(s);
+                JSONArray jsonArray = object.getJSONArray("msglist");
+                for (int i=0; i<jsonArray.length();i++){
+                    JSONObject msg = (JSONObject) jsonArray.get(i);
+                    Boolean isSent = Boolean.parseBoolean(msg.getString("isSent"));
+                    isSentArray.add(isSent);
+                    String user_id = msg.getString("user_id");
+                    senderArray.add(user_id);
+                    String text = msg.getString("text");
+                    textArray.add(text);
+                    String created = msg.getString("created"); // TODO: 2016. 11. 13.  정렬
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            mAdapter = new MsgListAdapter(MsgList.this,textArray,senderArray,isSentArray);
+            listView.setAdapter(mAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(MsgList.this,ReadMsg.class);
+                    i.putExtra("text",textArray.get(position));
+                    i.putExtra("sender",senderArray.get(position));
+                    i.putExtra("isSent",isSentArray.get(position));
+                    startActivity(i);
+                }
+            });
+
         }
 
         @Override
@@ -93,7 +115,7 @@ public class MsgList extends AppCompatActivity {
                 // add post parameters
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write("user_id=klight1994"); // TODO: 2016. 11. 13.
+                writer.write("user_id=8637959_naver"); // TODO: 2016. 11. 13.
                 writer.flush();
                 writer.close();
                 os.close();

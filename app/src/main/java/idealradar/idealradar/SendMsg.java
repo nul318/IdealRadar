@@ -43,7 +43,7 @@ public class SendMsg extends AppCompatActivity {
         sendbtn=(Button)findViewById(R.id.sendBtn);
         textid=(TextView)findViewById(R.id.sendID);
         Intent it =getIntent();
-        receiver=(String)it.getSerializableExtra("userData"); //receiver
+        receiver="37415457_naver"; //(String)it.getSerializableExtra("userData"); //receiver
         textid.setText(receiver);
 
         sendbtn.setOnClickListener(new View.OnClickListener() {
