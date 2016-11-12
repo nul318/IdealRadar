@@ -79,7 +79,7 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
         }
 
         @Override
-        public void onCalloutClick(NMapPOIdataOverlay nMapPOIdataOverlay, NMapPOIitem item) {
+            public void onCalloutClick(NMapPOIdataOverlay nMapPOIdataOverlay, NMapPOIitem item) {
             Toast.makeText(Map.this, "onCalloutClick: " + item.getTitle(), Toast.LENGTH_LONG).show();
             Intent it=new Intent(getApplicationContext(),SendMsg.class);
             it.putExtra("userData",item.getTitle());
