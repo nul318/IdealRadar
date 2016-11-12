@@ -105,9 +105,16 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
                 finish();
 
                 break;
+            case R.id.home_chat:
+                it=new Intent(getApplicationContext(),MsgList.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
 
             case R.id.home_map:
                 it=new Intent(getApplicationContext(),Map.class);
+                it.putExtra("user_id", user_id);
                 startActivity(it);
                 finish();
                 break;
