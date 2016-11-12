@@ -46,6 +46,8 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 public class AddInfo extends AppCompatActivity {
     String image_url;
     String user_id;
+    Boolean image_update_check=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,20 +90,21 @@ public class AddInfo extends AppCompatActivity {
 
 
                 try {
-                    String realpath = getRealImagePath(Uri.parse(image_url));
-                    String key = URLDecoder.decode(realpath, "UTF-8");
-                    fileUpload(key);
+                    if(image_update_check){
+                        String realpath = getRealImagePath(Uri.parse(image_url));
+                        String key = URLDecoder.decode(realpath, "UTF-8");
+                        fileUpload(key);
+                    }
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
 
 
-//                Intent intent = new Intent(AddInfo.this, Home.class);
-//
-//                intent.putExtra("image", image_url);
-//                intent.putExtra("user_id", user_id);
-//                startActivity(intent);
+                Intent intent = new Intent(AddInfo.this, Home.class);
+                intent.putExtra("image", image_url);
+                intent.putExtra("user_id", user_id);
+                startActivity(intent);
 
             }
         };
@@ -219,6 +222,7 @@ public class AddInfo extends AppCompatActivity {
                     image_url = String.valueOf(data.getData());
                     Log.i("image_url", image_url);
                     Glide.with(this).load(mDataUri).bitmapTransform(new CropCircleTransformation(new CustomBitmapPool() {})).into(profile_image);
+                    image_update_check=true;
                 }
                 break;
         }

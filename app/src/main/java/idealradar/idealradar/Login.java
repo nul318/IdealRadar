@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
@@ -139,7 +141,14 @@ public class Login extends AppCompatActivity {
                 String URL = "http://hanea8199.vps.phps.kr/IdealRadar/LogIn.php";
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(URL);
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(6);
+
+                //FCM
+                FirebaseMessaging.getInstance().subscribeToTopic("notice");
+                String token = FirebaseInstanceId.getInstance().getToken();
+                //FCM
+
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
                 try {
                     nameValuePairs.add(new BasicNameValuePair("email", URLEncoder.encode(user_email,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("user_id", URLEncoder.encode(user_id,"UTF-8")));
@@ -147,6 +156,7 @@ public class Login extends AppCompatActivity {
                     nameValuePairs.add(new BasicNameValuePair("name", URLEncoder.encode(user_name,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("image_path", URLEncoder.encode(user_image,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("age", URLEncoder.encode(user_age,"UTF-8")));
+                    nameValuePairs.add(new BasicNameValuePair("fcm_token", URLEncoder.encode(token,"UTF-8")));
 
 //                    Log.i("user_name",URLEncoder.encode(user_name,"UTF-8"));
                 } catch (UnsupportedEncodingException e) {
@@ -179,20 +189,19 @@ public class Login extends AppCompatActivity {
                         public void run() {
                             // TODO Auto-generated method stub
                             Intent intent;
-//                            if(results.equals("true")){
-//                                intent = new Intent(Login.this, Home.class);
-//                                intent.putExtra("profile", profile);
-//                                startActivity(intent);
-//                            }else{
-//                                intent = new Intent(Login.this, AddInfo.class);
-//                                intent.putExtra("image", user_image);
-//                                intent.putExtra("user_id", user_id);
-//                                startActivity(intent);
-//                            }
-                            intent = new Intent(Login.this, AddInfo.class);
-                            intent.putExtra("image", user_image);
-                            intent.putExtra("user_id", user_id);
-                            startActivity(intent);
+
+
+                            if(results.equals("true")){
+                                intent = new Intent(Login.this, Home.class);
+                                intent.putExtra("user_id", user_id);
+                                startActivity(intent);
+                            }else{
+                                intent = new Intent(Login.this, AddInfo.class);
+                                intent.putExtra("image", user_image);
+                                intent.putExtra("user_id", user_id);
+                                startActivity(intent);
+                            }
+
                             finish();
                         }
                     });
@@ -210,5 +219,7 @@ public class Login extends AppCompatActivity {
             }
         }.start();
     }
+
+
 
 }

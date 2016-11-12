@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/imageView"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="SEND"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:text="Hanul Lee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/user_name"
+
+
+        android:fontFamily="sans-serif"
+        android:textSize="20sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="13dp"
+        android:layout_above="@+id/textView2"
+        android:layout_toEndOf="@+id/imageView" />
+
+    <TextView
+        android:text="60%"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignStart="@+id/user_name"
+        android:id="@+id/similar_rate" />
+
+    <TextView
+        android:text="23세"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/age"
+        android:layout_marginStart="16dp"
+        android:layout_alignBaseline="@+id/similar_rate"
+        android:layout_alignBottom="@+id/similar_rate"
+        android:layout_toEndOf="@+id/user_name" />
+
+    <TextView
+        android:text="Inha Universitiy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/universitiy"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp" />
+
+    <TextView
+        android:text="Computer Engineering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/major"
+        android:layout_alignBaseline="@+id/universitiy"
+        android:layout_alignBottom="@+id/universitiy"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

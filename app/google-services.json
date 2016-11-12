@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "808247661188",
+    "firebase_url": "https://idealradar-f836b.firebaseio.com",
+    "project_id": "idealradar-f836b",
+    "storage_bucket": "idealradar-f836b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808247661188:android:f20b81d3777199cc",
+        "android_client_info": {
+          "package_name": "idealradar.idealradar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808247661188-lhb0r1cp7e0gmapvbdntc8f5g8furpi7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA1Z5po7bbkZ9YQOYstpMyylfEE-iy8SU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

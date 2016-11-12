@@ -35,6 +35,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.google.firebase:firebase-messaging:9.6.1'
+
+
+
+
+
     testCompile 'junit:junit:4.12'
     compile files('libs/3rdparty_login_library_android_4.1.4.jar')
     compile files('libs/commons-codec-1.9.jar')
@@ -49,4 +55,9 @@ dependencies {
     compile 'com.naver.maps.open:naver-map-api:2.1.2@aar'
     compile files('libs/httpclient-4.3.6.jar')
     compile files('libs/httpcore-4.3.jar')
+
+
+
 }
+apply plugin: 'com.google.gms.google-services'
+
