@@ -102,9 +102,6 @@ public class Login extends AppCompatActivity {
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
-
-
-
                         }
                     }.start();
 

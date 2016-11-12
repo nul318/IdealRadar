@@ -1,9 +1,13 @@
 package idealradar.idealradar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapActivity;
@@ -16,8 +20,11 @@ import com.nhn.android.maps.overlay.NMapPOIitem;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 
-public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventListener,NMapView.OnMapStateChangeListener
+import java.util.ArrayList;
+
+public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventListener,NMapView.OnMapStateChangeListener,View.OnClickListener
 {
+    ImageButton btn_profile,btn_alert,btn_home,btn_friend,btn_chat;
     NMapView mMapView=null;
     NMapController mMapController=null;
     NMapViewerResourceProvider mMapViewerResourceProvider=null;
@@ -26,9 +33,23 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_map);
 // create map view
-         mMapView = new NMapView(this);
+        btn_profile=(ImageButton)findViewById(R.id.map_profile);
+        btn_profile.setOnClickListener(this);
+
+        btn_alert=(ImageButton)findViewById(R.id.map_alert);
+        btn_alert.setOnClickListener(this);
+
+        btn_home=(ImageButton)findViewById(R.id.map_home);
+        btn_home.setOnClickListener(this);
+
+        btn_friend=(ImageButton)findViewById(R.id.map_friend);
+        btn_friend.setOnClickListener(this);
+
+        btn_chat=(ImageButton)findViewById(R.id.map_chat);
+        btn_chat.setOnClickListener(this);
+         mMapView = (NMapView)findViewById(R.id.Nmapview);
 
 // 기존 API key 방식은 deprecated 함수이며, 2016년 말까지만 사용 가능합니다.
 // mMapView.setApiKey(API_KEY);
@@ -37,7 +58,6 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
         mMapView.setClientId(clientId);
 
 // set the activity content to the map view
-        setContentView(mMapView);
 
 // initialize map view
         mMapView.setClickable(true);
@@ -143,5 +163,53 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
     @Override
     public void onSingleTapUp(NMapView nMapView, MotionEvent motionEvent) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent it=null;
+        switch (view.getId())
+        {
+            case R.id.map_alert:
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
+                        Map.this);
+                alertBuilder.setTitle("친구요청");
+                // List Adapter 생성
+                ArrayList<FriendsQueue> arrayList=new ArrayList<FriendsQueue>();
+
+                FriendAdapter friendAdapter= new FriendAdapter(getApplicationContext(),R.layout.friend_pop_list,arrayList);
+                friendAdapter.addItem("사과",0.3);
+                friendAdapter.addItem("딸기",0.4);
+                friendAdapter.addItem("오렌지",0.32);
+                friendAdapter.addItem("수박",0.64);
+                friendAdapter.addItem("참외",0.24);
+
+                // 버튼 생성
+                alertBuilder.setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                // Adapter 셋팅
+                alertBuilder.setAdapter(friendAdapter,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+
+                            }
+                        });
+                alertBuilder.show();
+                break;
+            case R.id.map_home:
+                it=new Intent(getApplicationContext(),Home.class);
+                startActivity(it);
+                finish();
+                break;
+
+
+        }
     }
 }
