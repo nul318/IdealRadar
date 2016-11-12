@@ -92,7 +92,7 @@ public class Login extends AppCompatActivity {
                                 String user_image = response.getString("profile_image");
                                 String user_age = response.getString("age");
 
-                                sendJsonDataToServer(user_email, user_id , user_gender, user_name, user_image, user_age);
+                                submit(user_email, user_id , user_gender, user_name, user_image, user_age);
 
                                 //아이디, 이름, 나이, 학교, 전공, 학번, 성별, 프로필사진
                             } catch (JSONException e) {
@@ -139,12 +139,12 @@ public class Login extends AppCompatActivity {
     }
 
 
-    private void sendJsonDataToServer(final String user_email, final String user_id , final String user_gender, final String user_name, final String user_image, final String user_age) throws UnsupportedEncodingException {
+    private void submit(final String user_email, final String user_id , final String user_gender, final String user_name, final String user_image, final String user_age) throws UnsupportedEncodingException {
         new Thread() {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-                String URL = "http://hanea8199.vps.phps.kr/IdealRadar/UpdateUserInfo.php";
+                String URL = "http://hanea8199.vps.phps.kr/IdealRadar/LogIn.php";
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(URL);
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(6);
@@ -174,8 +174,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         }.start();
-
-
     }
 
 }
