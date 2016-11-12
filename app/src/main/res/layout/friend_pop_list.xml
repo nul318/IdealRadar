@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:gravity="center"
+        android:id="@+id/friend_id"
+        android:layout_width="200dp"
+        android:layout_height="80px"
+        android:text="klight1994"
+        android:textColor="#4e4e4e"
+        />
+
+    <ImageButton
+        android:id="@+id/BtnCheck"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:textColor="#000000"
+        android:textSize="33px"
+        android:background="@mipmap/friend_btn_accept"
+        android:layout_marginLeft="4dip"/>
+
+    <ImageButton
+        android:id="@+id/BtnCancel"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:textColor="#000000"
+        android:textSize="33px"
+        android:text="X"
+        android:layout_marginLeft="4dip"
+        android:background="@mipmap/friend_btn_cancel"
+        />
+
+</LinearLayout>

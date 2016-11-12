@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:id="@+id/mail_component"
+
+
+    >
+
+
+    <TextView
+        android:text="sky"
+        android:textColor="@android:color/background_dark"
+        android:textSize="20sp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/mailbox_textId"
+        android:layout_marginLeft="10dp"
+        android:padding="6dp"
+        />
+
+    <TextView
+        android:text="11/12"
+        android:layout_marginRight="10dp"
+        android:gravity="right"
+        android:textColor="@android:color/background_dark"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text"
+        android:padding="6dp"
+        />
+
+
+</LinearLayout>

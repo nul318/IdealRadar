@@ -13,10 +13,11 @@ public class Launcher extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-     /*   startService(new Intent("idealrader.idealrader.gpsservice"));
-        Intent it=new Intent(this,Map.class);
+       startService(new Intent("idealrader.idealrader.gpsservice"));
+     /*   Intent it=new Intent(this,Map.class);
         startActivity(it);*/
         activitStart();
+
 
     }
 
@@ -36,6 +37,7 @@ public class Launcher extends AppCompatActivity {
 
                         Intent intent = new Intent(Launcher.this, Login.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
             }
