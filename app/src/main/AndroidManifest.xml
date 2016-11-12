@@ -66,14 +66,21 @@
         </receiver>
 
         <activity android:name=".Map">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".SendMsg"/>
+        <activity android:name=".MsgList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".SendMsg"/>
-        <activity android:name=".MsgList">
+        <activity android:name=".ReadMsg">
         </activity>
     </application>
 
