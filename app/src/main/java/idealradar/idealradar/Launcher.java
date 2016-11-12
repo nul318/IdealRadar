@@ -1,5 +1,7 @@
 package idealradar.idealradar;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,11 +15,21 @@ public class Launcher extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-//        startService(new Intent("idealrader.idealrader.gpsservice"));
+        if(!isServiceRunningCheck()) {
+            startService(new Intent("idealrader.idealrader.gpsservice"));
+        }
         activityStart();
 
     }
-
+    public boolean isServiceRunningCheck() {
+        ActivityManager manager = (ActivityManager) this.getSystemService(Activity.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("idealrader.idealrader.gpsservice".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     protected void activityStart(){
         new Thread() {
             @Override

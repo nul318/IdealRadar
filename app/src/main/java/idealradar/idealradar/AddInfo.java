@@ -105,7 +105,7 @@ public class AddInfo extends AppCompatActivity {
                 intent.putExtra("image", image_url);
                 intent.putExtra("user_id", user_id);
                 startActivity(intent);
-
+                finish();
             }
         };
 
