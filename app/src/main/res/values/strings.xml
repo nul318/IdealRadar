@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">IdealRadar</string>
+    <string name="str_done">완료</string>
 </resources>
