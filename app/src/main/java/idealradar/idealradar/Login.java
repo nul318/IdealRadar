@@ -24,7 +24,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -57,9 +60,6 @@ public class Login extends AppCompatActivity {
     }
 
     protected void naverModule(){
-
-
-
         /**
          * OAuthLoginHandler를 startOAuthLoginActivity() 메서드 호출 시 파라미터로 전달하거나 OAuthLoginButton
          객체에 등록하면 인증이 종료되는 것을 확인할 수 있습니다.
@@ -101,15 +101,7 @@ public class Login extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // TODO Auto-generated method stub
-                                    Intent intent = new Intent(Login.this, Home.class);
-                                    intent.putExtra("profile", profile);
-                                    startActivity(intent);
-                                }
-                            });
+
 
                         }
                     }.start();
@@ -155,6 +147,8 @@ public class Login extends AppCompatActivity {
                     nameValuePairs.add(new BasicNameValuePair("name", URLEncoder.encode(user_name,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("image_path", URLEncoder.encode(user_image,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("age", URLEncoder.encode(user_age,"UTF-8")));
+
+//                    Log.i("user_name",URLEncoder.encode(user_name,"UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -162,7 +156,48 @@ public class Login extends AppCompatActivity {
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     HttpResponse response = httpClient.execute(httpPost);
                     Log.d("Http Post Request:", nameValuePairs.toString());
-                    Log.d("Http Post Response:", response.toString());
+//                    Log.d("Http Post Response:", response.toString()); //서버 응답이 가공되지 않음
+
+                    /*
+                     * HttpResponse response 로 서버 응답 알아내는 코드
+                     */
+                    InputStream inputStream = response.getEntity().getContent();
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    final StringBuilder stringBuilder = new StringBuilder();
+                    String bufferedStrChunk = null;
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+                    Log.v("Http Post Response:", stringBuilder.toString());// 서버 응답
+
+                    final String results = stringBuilder.toString().replaceAll("\\p{Z}", "");
+
+                    //-------------------------------------------------------------------
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method stub
+                            Intent intent;
+//                            if(results.equals("true")){
+//                                intent = new Intent(Login.this, Home.class);
+//                                intent.putExtra("profile", profile);
+//                                startActivity(intent);
+//                            }else{
+//                                intent = new Intent(Login.this, AddInfo.class);
+//                                intent.putExtra("image", user_image);
+//                                intent.putExtra("user_id", user_id);
+//                                startActivity(intent);
+//                            }
+                            intent = new Intent(Login.this, AddInfo.class);
+                            intent.putExtra("image", user_image);
+                            intent.putExtra("user_id", user_id);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+
+
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 } catch (ClientProtocolException e) {
