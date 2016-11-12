@@ -18,8 +18,14 @@ android {
         }
     }
     packagingOptions {
+
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+
+        exclude 'META-INF/LICENSE'
+
+
     }
 }
 
@@ -45,8 +51,5 @@ dependencies {
 
 
 
-
-
-
-
+    compile 'com.naver.maps.open:naver-map-api:2.1.2@aar'
 }
