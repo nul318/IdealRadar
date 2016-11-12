@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:text="Major"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/major_label"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/universitiy_label" />
+
+    <TextView
+        android:text="Student Code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/student_code_label"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/major_label"
+        android:layout_alignStart="@+id/major_label" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Student Code"
+        android:ems="10"
+        android:id="@+id/student_code_input"
+        android:layout_alignTop="@+id/student_code_label"
+        android:layout_alignStart="@+id/universitiy_input" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Major"
+        android:ems="10"
+        android:id="@+id/major_input"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/student_code_input" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:layout_marginTop="73dp"
+        android:id="@+id/profile_image"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit"
+        android:layout_below="@+id/student_code_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Universitiy"
+        android:ems="10"
+        android:layout_marginStart="12dp"
+        android:id="@+id/universitiy_input"
+        android:layout_alignBaseline="@+id/universitiy_label"
+        android:layout_alignBottom="@+id/universitiy_label"
+        android:layout_toEndOf="@+id/student_code_label" />
+
+    <TextView
+        android:text="Universitiy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/universitiy_label"
+        android:layout_above="@+id/major_input"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="27dp"
+        android:layout_marginBottom="33dp" />
+
+
+</RelativeLayout>
