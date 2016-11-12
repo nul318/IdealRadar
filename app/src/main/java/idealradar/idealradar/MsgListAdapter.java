@@ -62,9 +62,9 @@ public class MsgListAdapter extends BaseAdapter {
         holder.tv_sender.setText(senderArray.get(position));
         holder.tv_text.setText(textArray.get(position));
         if(isSentArray.get(position)){
-            // TODO: 2016. 11. 13.  내가 보낸거
+            holder.iv.setImageResource(R.drawable.send);
         }else {
-            // TODO: 2016. 11. 13.  받은거
+            holder.iv.setImageResource(R.drawable.receive);
         }
 
 
