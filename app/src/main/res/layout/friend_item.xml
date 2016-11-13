@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="130dp">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical" android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:background="@drawable/friend_item_bg">
 
     <ImageView
         android:layout_width="50dp"
@@ -14,29 +16,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="SEND"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
         android:layout_marginEnd="30dp"
         android:id="@+id/textView2"
         android:layout_alignBottom="@+id/imageView"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="12dp" />
-
-    <TextView
-        android:text="Hanul Lee"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_name"
-
-
-        android:fontFamily="sans-serif"
-        android:textSize="20sp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="13dp"
-        android:layout_above="@+id/textView2"
-        android:layout_toEndOf="@+id/imageView" />
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/send"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
 
     <TextView
         android:text="60%"
@@ -44,34 +32,49 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageView"
         android:layout_alignStart="@+id/user_name"
-        android:id="@+id/similar_rate" />
+        android:id="@+id/similar_rate"
+
+        />
 
     <TextView
-        android:text="23세"
+        android:text="Hanul Lee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/age"
-        android:layout_marginStart="16dp"
-        android:layout_alignBaseline="@+id/similar_rate"
-        android:layout_alignBottom="@+id/similar_rate"
-        android:layout_toEndOf="@+id/user_name" />
+        android:id="@+id/user_name"
 
-    <TextView
-        android:text="Inha Universitiy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/universitiy"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="11dp" />
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:text="Computer Engineering"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/major"
+        android:layout_marginRight="20dp"
         android:layout_alignBaseline="@+id/universitiy"
         android:layout_alignBottom="@+id/universitiy"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_marginEnd="10dp"/>
+
+    <TextView
+        android:text="Inha Universitiy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/universitiy"
+        android:layout_marginBottom="11dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/similar_rate"/>
+
+    <TextView
+        android:text="23세"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/age"
+        android:layout_alignBaseline="@+id/similar_rate"
+        android:layout_alignBottom="@+id/similar_rate"
+        android:layout_alignStart="@+id/major"
+        android:layout_marginStart="18dp"/>
 
 </RelativeLayout>
