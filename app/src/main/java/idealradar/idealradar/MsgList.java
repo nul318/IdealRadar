@@ -1,5 +1,7 @@
 package idealradar.idealradar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +42,7 @@ public class MsgList extends AppCompatActivity {
         setContentView(R.layout.activity_msg_list);
 
         user_id = getIntent().getStringExtra("user_id");
+        Toast.makeText(this, "id "+user_id, Toast.LENGTH_SHORT).show();
 
         String url = "http://hanea8199.vps.phps.kr/IdealRadar/GetMsgList.php";
         new mAsyncTask().execute(url);
@@ -51,7 +55,6 @@ public class MsgList extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            // TODO: 2016. 11. 13.  json 으로 메세지 리스트 받아서 리스트뷰로 출력
             Log.d(TAG, "onPostExecute: "+s);
 
             final ArrayList<String> textArray = new ArrayList<>();
@@ -66,7 +69,7 @@ public class MsgList extends AppCompatActivity {
                     JSONObject msg = (JSONObject) jsonArray.get(i);
                     Boolean isSent = Boolean.parseBoolean(msg.getString("isSent"));
                     isSentArray.add(isSent);
-                    String user_id = msg.getString("user_id");
+                    String user_id = msg.getString("nickname");
                     senderArray.add(user_id);
                     String text = msg.getString("text");
                     textArray.add(text);
@@ -150,5 +153,34 @@ public class MsgList extends AppCompatActivity {
         }
 
 
+    }
+
+
+    public void mOnClick(View view) {
+        Intent it;
+        switch (view.getId())
+        {
+            case R.id.chat_home:
+                it=new Intent(getApplicationContext(),Home.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+
+            case R.id.chat_friend:
+
+                it=new Intent(getApplicationContext(),FriendsList.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+
+            case R.id.chat_map:
+                it=new Intent(getApplicationContext(),Map.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+        }
     }
 }

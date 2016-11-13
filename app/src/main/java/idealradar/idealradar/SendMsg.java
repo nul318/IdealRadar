@@ -42,9 +42,10 @@ public class SendMsg extends AppCompatActivity {
         textdata=(EditText)findViewById(R.id.sendText);
         sendbtn=(Button)findViewById(R.id.sendBtn);
         textid=(TextView)findViewById(R.id.sendID);
-        Intent it =getIntent();
-        receiver=getIntent().getStringExtra("receiver"); //"37415457_naver"; //receiver
-        textid.setText(receiver);
+
+        receiver= getIntent().getStringExtra("receiver");
+        String nickname = getIntent().getStringExtra("nickname"); // TODO: 2016. 11. 13.
+        textid.setText(nickname);
 
         user_id = getIntent().getStringExtra("user_id");
 

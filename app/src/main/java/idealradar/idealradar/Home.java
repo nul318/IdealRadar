@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        user_id = getIntent().getStringExtra("user_id");
 
 
         btn_profile=(ImageButton)findViewById(R.id.home_profile);
@@ -40,6 +40,13 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
         btn_chat=(ImageButton)findViewById(R.id.home_chat);
         btn_chat.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        user_id = getIntent().getStringExtra("user_id");
+        Toast.makeText(this, "id "+user_id, Toast.LENGTH_SHORT).show();
     }
 
     @Override

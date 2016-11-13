@@ -29,6 +29,7 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
     NMapController mMapController=null;
     NMapViewerResourceProvider mMapViewerResourceProvider=null;
     String clientId="j6dfzQJmWqbBP28epdFN";
+    String user_id;
     NMapOverlayManager mOverlayManager=null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -205,11 +206,23 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
                 break;
             case R.id.map_home:
                 it=new Intent(getApplicationContext(),Home.class);
+                it.putExtra("user_id",user_id);
                 startActivity(it);
                 finish();
                 break;
-
+            case R.id.map_chat :
+                it=new Intent(getApplicationContext(),MsgList.class);
+                startActivity(it);
+                it.putExtra("user_id",user_id);
+                finish();
+                break;
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        user_id = getIntent().getStringExtra("user_id");
     }
 }
