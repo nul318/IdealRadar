@@ -192,14 +192,17 @@ public class Login extends AppCompatActivity {
                                 intent = new Intent(Login.this, Home.class);
                                 intent.putExtra("user_id", user_id);
                                 startActivity(intent);
+
+                                finish();
                             }else{
                                 intent = new Intent(Login.this, AddInfo.class);
                                 intent.putExtra("image", user_image);
                                 intent.putExtra("user_id", user_id);
                                 startActivity(intent);
+
+                                finish();
                             }
 
-                            finish();
                         }
                     });
 

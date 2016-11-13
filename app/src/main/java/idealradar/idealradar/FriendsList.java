@@ -1,6 +1,9 @@
 package idealradar.idealradar;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,8 +36,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsList extends AppCompatActivity {
+public class FriendsList extends AppCompatActivity implements View.OnClickListener{
 
+    ImageButton btn_profile,btn_alert,btn_home,btn_map,btn_chat;
     private myAdapter Adapter;
     final ArrayList<Friend> Friends_list = new ArrayList<Friend>();
     String user_id;
@@ -43,6 +48,20 @@ public class FriendsList extends AppCompatActivity {
         setContentView(R.layout.activity_friends_list);
         user_id = getIntent().getStringExtra("user_id");
 
+        btn_profile=(ImageButton)findViewById(R.id.friends_profile);
+        btn_profile.setOnClickListener(this);
+
+        btn_alert=(ImageButton)findViewById(R.id.friends_alert);
+        btn_alert.setOnClickListener(this);
+
+        btn_home=(ImageButton)findViewById(R.id.friends_home);
+        btn_home.setOnClickListener(this);
+
+        btn_map=(ImageButton)findViewById(R.id.friends_map);
+        btn_map.setOnClickListener(this);
+
+        btn_chat=(ImageButton)findViewById(R.id.friends_chat);
+        btn_chat.setOnClickListener(this);
         Friends_list.add(new Friend("a","a","a"));
         Friends_list.add(new Friend("a","a","a"));
         Friends_list.add(new Friend("a","a","a"));
@@ -60,7 +79,7 @@ public class FriendsList extends AppCompatActivity {
         Friends_list.add(new Friend("a","a","a"));
 
         Adapter = new myAdapter(this, R.layout.friend_item, Friends_list);
-        ListView list = (ListView) findViewById(R.id.friends_list);
+        ListView list = (ListView) findViewById(R.id.friends_listview);
 
         list.setAdapter(Adapter);
         // 리스트뷰 속성(없어도 구현 가능)
@@ -85,6 +104,62 @@ public class FriendsList extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent it=null;
+        switch (view.getId())
+        {
+            case R.id.friends_alert:
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
+                        FriendsList.this);
+                alertBuilder.setTitle("친구요청");
+                // List Adapter 생성
+                ArrayList<FriendsQueue> arrayList=new ArrayList<FriendsQueue>();
+
+                FriendAdapter friendAdapter= new FriendAdapter(getApplicationContext(),R.layout.friend_pop_list,arrayList);
+
+                // 버튼 생성
+                alertBuilder.setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                // Adapter 셋팅
+                alertBuilder.setAdapter(friendAdapter,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+
+                            }
+                        });
+                alertBuilder.show();
+                break;
+            case R.id.friends_home:
+                it=new Intent(getApplicationContext(),Home.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+            case R.id.friends_chat:
+                it=new Intent(getApplicationContext(),MsgList.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+            case R.id.friends_map:
+                it=new Intent(getApplicationContext(),Map.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+
+
+        }
     }
 
     public class myAdapter extends BaseAdapter {

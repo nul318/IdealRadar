@@ -17,8 +17,9 @@ public class Launcher extends AppCompatActivity {
         setContentView(R.layout.activity_launcher);
         if(!isServiceRunningCheck()) {
             startService(new Intent("idealrader.idealrader.gpsservice"));
-        }
+           }
         activityStart();
+
 
     }
     public boolean isServiceRunningCheck() {

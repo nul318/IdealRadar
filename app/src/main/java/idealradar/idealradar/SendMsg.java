@@ -30,7 +30,7 @@ public class SendMsg extends AppCompatActivity {
     EditText textdata;
     String text;
     String receiver;
-    String user_id = "8637959_naver"; // TODO: 2016. 11. 12. user_id 받기
+    String user_id = ""; // TODO: 2016. 11. 12. user_id 받기
 
     String TAG = "SendMsg.java";
     HashMap<String, String> postDataParams;
@@ -43,9 +43,9 @@ public class SendMsg extends AppCompatActivity {
         sendbtn=(Button)findViewById(R.id.sendBtn);
         textid=(TextView)findViewById(R.id.sendID);
         Intent it =getIntent();
-        receiver="37415457_naver"; //(String)it.getSerializableExtra("userData"); //receiver
+        receiver=getIntent().getStringExtra("receiver"); //"37415457_naver";
         textid.setText(receiver);
-
+        user_id = getIntent().getStringExtra("user_id");
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

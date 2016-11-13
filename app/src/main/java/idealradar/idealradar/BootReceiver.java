@@ -15,8 +15,10 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+
             context.startService(new Intent("idealrader.idealrader.gpsservice"));
             Log.d("GYU","부팅 스타터!");
         }
     }
+
 }

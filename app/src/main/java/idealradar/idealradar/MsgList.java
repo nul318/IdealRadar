@@ -1,5 +1,7 @@
 package idealradar.idealradar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -26,22 +29,91 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MsgList extends AppCompatActivity {
+public class MsgList extends AppCompatActivity implements View.OnClickListener{
 
+    ImageButton btn_profile,btn_alert,btn_map,btn_friend,btn_home;
     ListView listView;
     MsgListAdapter mAdapter;
     String TAG = "MsgList";
-
+    String user_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_msg_list);
+        user_id = getIntent().getStringExtra("user_id");
+        btn_profile=(ImageButton)findViewById(R.id.msglist_profile);
+        btn_profile.setOnClickListener(this);
 
+        btn_alert=(ImageButton)findViewById(R.id.msglist_alert);
+        btn_alert.setOnClickListener(this);
+
+        btn_map=(ImageButton)findViewById(R.id.msglist_map);
+        btn_map.setOnClickListener(this);
+
+        btn_friend=(ImageButton)findViewById(R.id.msglist_friend);
+        btn_friend.setOnClickListener(this);
+
+        btn_home=(ImageButton)findViewById(R.id.msglist_home);
+        btn_home.setOnClickListener(this);
         String url = "http://hanea8199.vps.phps.kr/IdealRadar/GetMsgList.php";
         new mAsyncTask().execute(url);
 
-        listView = (ListView) findViewById(R.id.mListView);
+        listView = (ListView) findViewById(R.id.msglist_listview);
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent it = null;
+        switch (view.getId()) {
+            case R.id.msglist_alert:
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
+                        MsgList.this);
+                alertBuilder.setTitle("친구요청");
+                // List Adapter 생성
+                ArrayList<FriendsQueue> arrayList = new ArrayList<FriendsQueue>();
+
+                FriendAdapter friendAdapter = new FriendAdapter(getApplicationContext(), R.layout.friend_pop_list, arrayList);
+
+                // 버튼 생성
+                alertBuilder.setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                // Adapter 셋팅
+                alertBuilder.setAdapter(friendAdapter,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+
+                            }
+                        });
+                alertBuilder.show();
+                break;
+            case R.id.msglist_home:
+                it = new Intent(getApplicationContext(), Home.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+            case R.id.msglist_friend:
+                it = new Intent(getApplicationContext(), FriendsList.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+            case R.id.msglist_map:
+                it = new Intent(getApplicationContext(), Map.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+
+        }
     }
 
     private class mAsyncTask extends AsyncTask<String, Void, String> {
@@ -115,7 +187,7 @@ public class MsgList extends AppCompatActivity {
                 // add post parameters
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                writer.write("user_id=8637959_naver"); // TODO: 2016. 11. 13.
+                writer.write("user_id="+user_id);
                 writer.flush();
                 writer.close();
                 os.close();

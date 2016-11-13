@@ -10,11 +10,22 @@
         android:layout_marginLeft="5dp"
         android:gravity="center"
         android:id="@+id/friend_id"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="80px"
         android:text="klight1994"
         android:textColor="#4e4e4e"
         />
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:gravity="center"
+        android:id="@+id/friend_sim"
+        android:layout_width="50dp"
+        android:layout_height="80px"
+        android:text="65%"
+        android:textColor="#4e4e4e"
+        />
+
 
     <ImageButton
         android:id="@+id/BtnCheck"

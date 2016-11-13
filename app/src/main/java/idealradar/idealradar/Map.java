@@ -30,11 +30,16 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
     NMapViewerResourceProvider mMapViewerResourceProvider=null;
     String clientId="j6dfzQJmWqbBP28epdFN";
     NMapOverlayManager mOverlayManager=null;
+
+    String user_id;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 // create map view
+
+        user_id = getIntent().getStringExtra("user_id");
+
         btn_profile=(ImageButton)findViewById(R.id.map_profile);
         btn_profile.setOnClickListener(this);
 
@@ -178,11 +183,6 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
                 ArrayList<FriendsQueue> arrayList=new ArrayList<FriendsQueue>();
 
                 FriendAdapter friendAdapter= new FriendAdapter(getApplicationContext(),R.layout.friend_pop_list,arrayList);
-                friendAdapter.addItem("사과",0.3);
-                friendAdapter.addItem("딸기",0.4);
-                friendAdapter.addItem("오렌지",0.32);
-                friendAdapter.addItem("수박",0.64);
-                friendAdapter.addItem("참외",0.24);
 
                 // 버튼 생성
                 alertBuilder.setNegativeButton("취소",
@@ -205,10 +205,22 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
                 break;
             case R.id.map_home:
                 it=new Intent(getApplicationContext(),Home.class);
+                it.putExtra("user_id", user_id);
                 startActivity(it);
                 finish();
                 break;
-
+            case R.id.map_friend:
+                it=new Intent(getApplicationContext(),FriendsList.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
+            case R.id.map_chat:
+                it=new Intent(getApplicationContext(),MsgList.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
 
         }
     }

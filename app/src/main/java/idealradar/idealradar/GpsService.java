@@ -1,7 +1,6 @@
 package idealradar.idealradar;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,13 +8,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by Kim Gyu Hwan on 2016-11-12.
@@ -35,7 +33,7 @@ public class GpsService extends Service {
     }
     public static void Send(String user_id, String longi, String lati)
     {
-        new SendGPSdataTask().execute(user_id,longi,lati);
+        new SendDataTask().execute(user_id,longi,lati);
     }
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
@@ -45,8 +43,9 @@ public class GpsService extends Service {
             double altitude = location.getAltitude();   //고도
             float accuracy = location.getAccuracy();    //정확도
             String provider = location.getProvider();
-            String id = "aaa"; //네이버 아이디 API에서 가져올 값
+            String id = "47904983"; //네이버 아이디 API에서 가져올 값
             Log.d("GYU","GPS 데이터 쏴줌");
+            //Toast.makeText(getApplicationContext(), "데이터쏨", Toast.LENGTH_SHORT).show();
             Send(id,String.valueOf(longitude), String.valueOf(latitude));
         }
 
@@ -57,12 +56,14 @@ public class GpsService extends Service {
 
         @Override
         public void onProviderEnabled(String s) {
-            Log.d("GYU","GPS 사용중");
+
+         //   Toast.makeText(getApplicationContext(), "GPS사용중", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onProviderDisabled(String s) {
-            Log.d("GYU","GPS 사용불가");
+
+         //   Toast.makeText(getApplicationContext(), "GPS사용불가", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -71,8 +72,9 @@ public class GpsService extends Service {
         Log.d("slog", "onStart()");
         super.onStart(intent, startId);
 
+        //Toast.makeText(getApplicationContext(), "Start", Toast.LENGTH_SHORT).show();
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, mLocationListener);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 60000, 1, mLocationListener);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -83,7 +85,7 @@ public class GpsService extends Service {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, mLocationListener);
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 1, mLocationListener);
     }
 
     @Override
