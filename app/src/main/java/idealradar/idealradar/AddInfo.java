@@ -1,10 +1,12 @@
 package idealradar.idealradar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -63,11 +65,12 @@ public class AddInfo extends AppCompatActivity {
         /*
          * 네이버 프로필 사진 먼저 등록.
          */
-
         String default_image = intent.getStringExtra("image");
-        Glide.with(this).load(default_image).bitmapTransform(new CropCircleTransformation(new CustomBitmapPool() {})).into(profile_image);
-        image_url=default_image;
+        Glide.with(this).load(default_image).bitmapTransform(new CropCircleTransformation(new CustomBitmapPool() {
+        })).into(profile_image);
+        image_url = default_image;
         Log.i("image_url", image_url);
+
         //------------------------------------------------------------------
 
         Button submit = (Button) findViewById(R.id.submit);
@@ -90,7 +93,8 @@ public class AddInfo extends AppCompatActivity {
 
 
                 try {
-                    if(image_update_check){
+
+                    if(image_update_check) {
                         String realpath = getRealImagePath(Uri.parse(image_url));
                         String key = URLDecoder.decode(realpath, "UTF-8");
                         fileUpload(key);
@@ -134,12 +138,12 @@ public class AddInfo extends AppCompatActivity {
                 String URL = "http://hanea8199.vps.phps.kr/IdealRadar/UpdateUserInfo.php";
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(URL);
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
                 try {
                     nameValuePairs.add(new BasicNameValuePair("univ", URLEncoder.encode(univ,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("major", URLEncoder.encode(major,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("student_code", URLEncoder.encode(student_code,"UTF-8")));
-
+                    nameValuePairs.add(new BasicNameValuePair("user_id", URLEncoder.encode(user_id,"UTF-8")));
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
@@ -223,6 +227,15 @@ public class AddInfo extends AppCompatActivity {
                     Log.i("image_url", image_url);
                     Glide.with(this).load(mDataUri).bitmapTransform(new CropCircleTransformation(new CustomBitmapPool() {})).into(profile_image);
                     image_update_check=true;
+
+
+                    SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(AddInfo.this);
+                    SharedPreferences.Editor editor = mPref.edit();
+                    editor.putBoolean("image_update_check", image_update_check);
+
+
+
+                    editor.apply();
                 }
                 break;
         }

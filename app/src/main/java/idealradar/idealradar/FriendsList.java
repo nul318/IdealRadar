@@ -1,7 +1,9 @@
 package idealradar.idealradar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,27 +39,16 @@ public class FriendsList extends AppCompatActivity {
     private myAdapter Adapter;
     final ArrayList<Friend> Friends_list = new ArrayList<Friend>();
     String user_id;
+    Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_list);
         user_id = getIntent().getStringExtra("user_id");
 
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
-        Friends_list.add(new Friend("a","a","a"));
+
+
 
         Adapter = new myAdapter(this, R.layout.friend_item, Friends_list);
         ListView list = (ListView) findViewById(R.id.friends_list);
@@ -74,7 +65,11 @@ public class FriendsList extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent it=new Intent(getApplicationContext(),SendMsg.class);
+                it.putExtra("user_id", user_id);
+                it.putExtra("receiver", Friends_list.get(position).getUserName());
+                startActivity(it);
+                finish();
             }
         });
 
@@ -90,12 +85,12 @@ public class FriendsList extends AppCompatActivity {
     public class myAdapter extends BaseAdapter {
         Context con; // 이미지를 받는곳
         LayoutInflater inflater;
-        ArrayList<Friend> message_list;
+        ArrayList<Friend> friends_list;
         int layout;
-        myAdapter(Context context, int layout, ArrayList<Friend> message_list) {
+        myAdapter(Context context, int layout, ArrayList<Friend> friends_list) {
             con = context;
             this.layout = layout;
-            this.message_list = message_list;
+            this.friends_list = friends_list;
             inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             // 멤버변수 초기화
         }
@@ -103,13 +98,13 @@ public class FriendsList extends AppCompatActivity {
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return message_list.size();
+            return friends_list.size();
         }
 
         @Override
         public Object getItem(int position) {
             // TODO Auto-generated method stub
-            return message_list.get(position);
+            return friends_list.get(position);
         }
 
         @Override
@@ -128,6 +123,14 @@ public class FriendsList extends AppCompatActivity {
             TextView name = (TextView) convertView.findViewById(R.id.user_name);
             TextView age = (TextView) convertView.findViewById(R.id.age);
             TextView similar_rate = (TextView) convertView.findViewById(R.id.similar_rate);
+            TextView univ = (TextView) convertView.findViewById(R.id.universitiy);
+            TextView major = (TextView) convertView.findViewById(R.id.major);
+
+            name.setText(friends_list.get(position).getUserName());
+            age.setText(friends_list.get(position).getAge());
+            similar_rate.setText(friends_list.get(position).getSimilarRate());
+            univ.setText(friends_list.get(position).getUniv());
+            major.setText(friends_list.get(position).getMajor());
 
             return convertView;
         }
@@ -175,7 +178,17 @@ public class FriendsList extends AppCompatActivity {
                     JSONArray friends = new JSONArray(results);
                     for(int i=0; i< friends.length(); i++){
                         JSONObject friend = friends.getJSONObject(i);
+                        Friends_list.add(new Friend(friend.getString("friend_age"),friend.getString("friend_name"),friend.getString("friend_confidence"),
+                                friend.getString("friend_univ"), friend.getString("friend_major")));
                     }
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method
+                            Adapter.notifyDataSetChanged();
+                        }
+                    });
 
                     //아이디, 이름, 나이, 학교, 전공, 학번, 성별, 프로필사진
 

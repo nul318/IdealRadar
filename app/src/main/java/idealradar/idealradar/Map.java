@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +21,26 @@ import com.nhn.android.maps.overlay.NMapPOIitem;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventListener,NMapView.OnMapStateChangeListener,View.OnClickListener
 {
@@ -30,10 +50,44 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
     NMapViewerResourceProvider mMapViewerResourceProvider=null;
     String clientId="j6dfzQJmWqbBP28epdFN";
     NMapOverlayManager mOverlayManager=null;
+    String user_id;
+    NMapPOIdata poiData;
+    Handler handler;
+
+    ArrayList<String> lat;
+    ArrayList<String> lng;
+    ArrayList<String> name;
+    ArrayList<String> friend_id;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        handler = new Handler();
+        lat = new ArrayList<String>();
+        lng = new ArrayList<String>();
+        name = new ArrayList<String>();
+        friend_id = new ArrayList<String>();
+
+        try {
+            submit();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        user_id = getIntent().getStringExtra("user_id");
+
 // create map view
         btn_profile=(ImageButton)findViewById(R.id.map_profile);
         btn_profile.setOnClickListener(this);
@@ -74,18 +128,22 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
         int markerId = NMapPOIflagType.SPOT;
 
 // set POI data
-        NMapPOIdata poiData = new NMapPOIdata(2, mMapViewerResourceProvider);
-        poiData.beginPOIdata(2);
-        poiData.addPOIitem(126.653084, 37.449891, "klight1994", markerId, 0);
-        poiData.addPOIitem(126.653288, 37.449685, "iny27", markerId, 0);
-        poiData.addPOIitem(126.653488, 37.449685, "sky", markerId, 0);
-        poiData.endPOIdata();
+//        poiData = new NMapPOIdata(2, mMapViewerResourceProvider);
+//        poiData.beginPOIdata(2);
+//        poiData.addPOIitem(126.653084, 37.449891, "klight1994", markerId, 0);
+//        poiData.addPOIitem(126.653288, 37.449685, "iny27", markerId, 0);
+//        poiData.addPOIitem(126.653488, 37.449685, "sky", markerId, 0);
 
-// create POI data overlay
-        NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-        poiDataOverlay.showAllPOIdata(0);
 
-        poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+
+
+
+
+
+
+
+
+
     }
 
     private NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener=new NMapPOIdataOverlay.OnStateChangeListener() {
@@ -170,7 +228,7 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
         Intent it=null;
         switch (view.getId())
         {
-            case R.id.map_alert:
+            case R.id.home_alert:
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(
                         Map.this);
                 alertBuilder.setTitle("친구요청");
@@ -203,13 +261,120 @@ public class Map extends NMapActivity implements NMapView.OnMapViewTouchEventLis
                         });
                 alertBuilder.show();
                 break;
-            case R.id.map_home:
-                it=new Intent(getApplicationContext(),Home.class);
+
+            case R.id.map_friend:
+
+                it=new Intent(getApplicationContext(),FriendsList.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+
+                break;
+            case R.id.map_chat:
+                it=new Intent(getApplicationContext(),MsgList.class);
+                it.putExtra("user_id", user_id);
                 startActivity(it);
                 finish();
                 break;
 
+            case R.id.map_home:
+                it=new Intent(getApplicationContext(),Home.class);
+                it.putExtra("user_id", user_id);
+                startActivity(it);
+                finish();
+                break;
 
         }
     }
+
+
+
+    private void submit() throws UnsupportedEncodingException {
+        new Thread() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                String URL = "http://hanea8199.vps.phps.kr/IdealRadar/friends-map.php";
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(URL);
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                try {
+                    nameValuePairs.add(new BasicNameValuePair("user_id", URLEncoder.encode(user_id,"UTF-8")));
+
+//                    Log.i("user_name",URLEncoder.encode(user_name,"UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    HttpResponse response = httpClient.execute(httpPost);
+                    Log.d("Http Post Request:", nameValuePairs.toString());
+//                    Log.d("Http Post Response:", response.toString()); //서버 응답이 가공되지 않음
+
+                    /*
+                     * HttpResponse response 로 서버 응답 알아내는 코드
+                     */
+                    InputStream inputStream = response.getEntity().getContent();
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    final StringBuilder stringBuilder = new StringBuilder();
+                    String bufferedStrChunk = null;
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+                    Log.v("Http Post Response:", stringBuilder.toString());// 서버 응답
+
+                    final String results = stringBuilder.toString().replaceAll("\\p{Z}", "");
+
+                    final JSONArray friends = new JSONArray(results);
+
+                    for(int i=0; i< friends.length(); i++){
+                        JSONObject friend = friends.getJSONObject(i);
+                        friend_id.add(friend.getString("user_id"));
+                        name.add(friend.getString("nick_name"));
+                        lat.add(friend.getString("lat"));
+                        lng.add(friend.getString("lng"));
+                    }
+                    final int markerId = NMapPOIflagType.SPOT;
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // TODO Auto-generated method
+                            poiData = new NMapPOIdata(friends.length(), mMapViewerResourceProvider);
+                            poiData.beginPOIdata(friends.length());
+                            for(int i=0; i<friends.length(); i++){
+                                poiData.addPOIitem(Double.parseDouble(lat.get(i)), Double.parseDouble(lng.get(i)), name.get(i), markerId, 0);
+                            }
+                            poiData.endPOIdata();
+
+                            // create POI data overlay
+                            NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+                            poiDataOverlay.showAllPOIdata(0);
+
+                            poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+                        }
+                    });
+
+
+
+
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (ClientProtocolException e) {
+                    // Log exception
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // Log exception
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+
 }

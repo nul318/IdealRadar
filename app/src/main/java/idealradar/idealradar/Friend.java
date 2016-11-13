@@ -4,11 +4,16 @@ public class Friend {
     private String age;
     private String user_name;
     private String similar_rate;
+    private String univ;
+    private String major;
 
-    Friend(String age, String user_name, String similar_rate) {
+    Friend(String age, String user_name, String similar_rate, String univ, String major) {
         this.age = age;
         this.user_name = user_name;
         this.similar_rate = similar_rate;
+        this.univ = univ;
+        this.major= major;
+
     }
 
     String getAge() {
@@ -23,16 +28,23 @@ public class Friend {
         return similar_rate;
     }
 
-    void setAge(String age) {
-        this.age = age;
+    String getUniv() {
+        return univ;
     }
-
-    void setUserName(String user_name) {
-        this.user_name = user_name;
+    String getMajor() {
+        return major;
     }
-
-    void setSimilarRate(String similar_rate) {
-        this.similar_rate = similar_rate;
-    }
+//
+//    void setAge(String age) {
+//        this.age = age;
+//    }
+//
+//    void setUserName(String user_name) {
+//        this.user_name = user_name;
+//    }
+//
+//    void setSimilarRate(String similar_rate) {
+//        this.similar_rate = similar_rate;
+//    }
 }
 

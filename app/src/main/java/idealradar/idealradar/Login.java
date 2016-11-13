@@ -145,13 +145,13 @@ public class Login extends AppCompatActivity {
                 //FCM
 
 
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(6);
                 try {
                     nameValuePairs.add(new BasicNameValuePair("email", URLEncoder.encode(user_email,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("user_id", URLEncoder.encode(user_id,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("gender", URLEncoder.encode(user_gender,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("name", URLEncoder.encode(user_name,"UTF-8")));
-                    nameValuePairs.add(new BasicNameValuePair("image_path", URLEncoder.encode(user_image,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("age", URLEncoder.encode(user_age,"UTF-8")));
                     nameValuePairs.add(new BasicNameValuePair("fcm_token", URLEncoder.encode(token,"UTF-8")));
 

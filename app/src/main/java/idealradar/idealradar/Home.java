@@ -5,12 +5,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Home extends AppCompatActivity implements View.OnClickListener{
 
@@ -25,6 +42,24 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
         user_id = getIntent().getStringExtra("user_id");
 
+        Button search_ideal = (Button) findViewById(R.id.search_ideal);
+
+
+
+
+        View.OnClickListener search_listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                try {
+                    submit(user_id);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        search_ideal.setOnClickListener(search_listener);
 
         btn_profile=(ImageButton)findViewById(R.id.home_profile);
         btn_profile.setOnClickListener(this);
@@ -40,6 +75,8 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
         btn_chat=(ImageButton)findViewById(R.id.home_chat);
         btn_chat.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -101,6 +138,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
                 it=new Intent(getApplicationContext(),FriendsList.class);
                 it.putExtra("user_id", user_id);
+
                 startActivity(it);
                 finish();
 
@@ -122,4 +160,51 @@ public class Home extends AppCompatActivity implements View.OnClickListener{
 
         }
     }
+
+
+    private void submit(final String user_id) throws UnsupportedEncodingException {
+        new Thread() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                String URL = "http://hanea8199.vps.phps.kr/IdealRadar/Detect.php";
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(URL);
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                try {
+                    nameValuePairs.add(new BasicNameValuePair("user_id", URLEncoder.encode(user_id,"UTF-8")));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                    HttpResponse response = httpClient.execute(httpPost);
+                    Log.d("Http Post Request:", nameValuePairs.toString());
+
+//                    Log.d("Http Post Response:", response.toString());
+
+                    /*
+                     * HttpResponse response 로 서버 응답 알아내는 코드
+                     */
+                    InputStream inputStream = response.getEntity().getContent();
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    final StringBuilder stringBuilder = new StringBuilder();
+                    String bufferedStrChunk = null;
+                    while ((bufferedStrChunk = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+                    Log.v("Http Post Response:", stringBuilder.toString());// 서버 응답
+
+                    final String results = stringBuilder.toString().replaceAll("\\p{Z}", "");
+
+
+                } catch (IOException e) {
+                    // Log exception
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
 }
